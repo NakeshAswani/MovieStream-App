@@ -17,6 +17,7 @@ import RegisterModal from "./RegisterModal";
 function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const pathname = usePathname();
 
@@ -73,7 +74,9 @@ function Navbar() {
               >
                 Log In
               </Button>
-              <Button variant="outline" className="hover:bg-[#FAC748]">
+              <Button 
+               onClick={() => setIsRegisterModalOpen(true)}
+              variant="outline" className="hover:bg-[#FAC748]">
                 Register
               </Button>
             </div>
@@ -121,16 +124,17 @@ function Navbar() {
             </ul>
             <div className="flex flex-col items-center mt-8 space-y-3 text-black">
               <Button
-                onClick={() => {
-                  console.log("Opening Login Modal");
-                  setIsLoginModalOpen(true);
-                }}
                 variant="outline"
-                className="w-5/6 hover:bg-[#FAC748]"
+                className="hover:bg-[#FAC748]"
+                onClick={() => setIsLoginModalOpen(true)}
               >
                 Log In
               </Button>
-              <Button variant="outline" className="w-5/6 hover:bg-[#FAC748]">
+              <Button
+                variant="outline"
+                className="hover:bg-[#FAC748]"
+                onClick={() => setIsRegisterModalOpen(true)}
+              >
                 Register
               </Button>
             </div>
@@ -143,12 +147,12 @@ function Navbar() {
             setIsLoginModalOpen(false);
           }}
         />
-        <RegisterModal 
-        isOpen={isLoginModalOpen}
-        onClose={() => {
-          console.log("Closing Register Modal");
-          setIsLoginModalOpen(false);
-        }}
+        <RegisterModal
+          isOpen={isRegisterModalOpen}
+          onClose={() => {
+            console.log("Closing Register Modal");
+            setIsRegisterModalOpen(false);
+          }}
         />
       </div>
     </>
