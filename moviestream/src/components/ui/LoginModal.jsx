@@ -62,7 +62,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
   async function onSubmit(values) {
     await axios
-      .post(`https://j3bkmj8x-3001.inc1.devtunnels.ms/user/loginUser`, values)
+      .post(`http://localhost:3001/user/loginUser`, values)
       .then((res) => {
         console.log(res);
         setUserId(res.data.data.user.id);

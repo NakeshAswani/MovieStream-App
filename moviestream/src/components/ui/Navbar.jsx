@@ -28,7 +28,11 @@ function Navbar() {
 
   const logOut = () => {
     console.log("logout");
-    localStorage.removeItem("userId");
+    // localStorage.removeItem("userId");
+    if (typeof window !== "undefined") {
+      // Only run this in the browser
+      localStorage.removeItem("userId");
+    }
     Swal.fire({
       icon: "success",
       title: "Logout Successfully",

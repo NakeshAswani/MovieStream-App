@@ -16,7 +16,7 @@ export default function Wishlist() {
   const getWish = () => {
     axios
       .get(
-        `https://j3bkmj8x-3001.inc1.devtunnels.ms/wishlist/getWishlist/${userId}`
+        `http://localhost:3001/wishlist/getWishlist/${userId}`
       )
       .then((res) => {
         setWishList(res.data.wishlistData);
@@ -30,7 +30,7 @@ export default function Wishlist() {
     console.log(id)
     axios
       .delete(
-        `https://j3bkmj8x-3001.inc1.devtunnels.ms/wishlist/deleteWishlist/${id}`
+        `http://localhost:3001/wishlist/deleteWishlist/${id}`
       )
       .then((data) => {
         Swal.fire({

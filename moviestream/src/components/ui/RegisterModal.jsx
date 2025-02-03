@@ -55,7 +55,7 @@ export default function RegisterModal({ isOpen, onClose }) {
       };
     }
     await axios
-      .post(`https://j3bkmj8x-3001.inc1.devtunnels.ms/user/addUser`, obj)
+      .post(`http://localhost:3001/user/addUser`, obj)
       .then((res) => {
         console.log(res);
         Swal.fire({

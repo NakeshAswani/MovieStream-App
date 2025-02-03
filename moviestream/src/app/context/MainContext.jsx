@@ -5,11 +5,25 @@ export const wishListContext = createContext();
 
 function MainContext({ children }) {
   const [wishList, setWishList] = useState([]);
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  // const [userId, setUserId] = useState(localStorage.getItem("userId"));
+
+  // useEffect(() => {
+  //   localStorage.setItem("userId", userId);
+  //   console.log(userId);
+  // }, [userId]);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem("userId", userId);
-    console.log(userId);
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    }
   }, [userId]);
 
   return (

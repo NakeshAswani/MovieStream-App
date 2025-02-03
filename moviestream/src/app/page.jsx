@@ -24,7 +24,7 @@ export default function HomePage() {
     console.log(obj);
     await axios
       .post(
-        "https://j3bkmj8x-3001.inc1.devtunnels.ms/wishlist/addWishlist",
+        "http://localhost:3001/wishlist/addWishlist",
         obj
       )
       .then(() => {
