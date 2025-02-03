@@ -3,8 +3,7 @@ const fs = require('fs');
 
 const addWishlist = async (request, response) => {
     let responseObject = {};
-    const { Uid, Pid, Pname, Pdesc } = request.body;
-    const Pimage = request.file.filename;
+    const { Uid, Pid, Pname, Pdesc, Pimage } = request.body;
     const { data: wishlistData, error: wishlistError } = await supabase.from('Wishlist').insert([{ Uid, Pid, Pname, Pdesc, Pimage }]);
     if (wishlistError) {
         responseObject = {
