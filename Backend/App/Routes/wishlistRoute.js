@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const { addWishlist } = require("../Controllers/wishlistController");
+const { addWishlist, getWishlist, deleteWishlist } = require("../Controllers/wishlistController");
 
 const wishlistRoute = express.Router();
 
@@ -13,8 +13,10 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
-wishlistRoute.post("/addWishlist", upload.single("Pimage"), addWishlist)
+wishlistRoute.post("/addWishlist", upload.single("Pimage"), addWishlist);
+wishlistRoute.get("/getWishlist/:id", getWishlist);
+wishlistRoute.delete("/deleteWishlist/:id", deleteWishlist);
 
 module.exports = wishlistRoute;
