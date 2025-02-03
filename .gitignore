@@ -2,11 +2,7 @@
 
 # dependencies
 /moviestream/node_modules
-/moviestream/package.json
-/moviestream/package-lock.json
 /Backend/node_modules
-/Backend/package.json
-/Backend/package-lock.json
 /Backend/.env
 /.pnp
 .pnp.*
