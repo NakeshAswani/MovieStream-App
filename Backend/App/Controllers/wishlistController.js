@@ -43,20 +43,6 @@ const getWishlist = async (request, response) => {
 const deleteWishlist = async (request, response) => {
     let responseObject = {};
     const { id } = request.params;
-    // const { data: wishlistData, error: wishlistError } = await supabase.from('Wishlist').delete().eq('Wid', id);
-    // if (wishlistError) {
-    //     responseObject = {
-    //         status: 400,
-    //         message: wishlistError.message,
-    //     };
-    // }
-    // else {
-    //     fs.unlinkSync(`uploads/wishlist/${wishlistData.Pimage}`)
-    //     responseObject = {
-    //         status: 200,
-    //         message: "data deleted",
-    //     };
-    // }
     const { data: wishlistData, error: wishlistError } = await supabase.from('Wishlist').select("*").eq('Wid', id);
     if (wishlistError) {
         responseObject = {
@@ -65,7 +51,6 @@ const deleteWishlist = async (request, response) => {
         };
     }
     else {
-        fs.unlinkSync(`uploads/wishlist/${wishlistData[0].Pimage}`);
         const { data: deleteData, error: deleteError } = await supabase.from('Wishlist').delete().eq('Wid', wishlistData[0].Wid);
         if (deleteError) {
             responseObject = {
