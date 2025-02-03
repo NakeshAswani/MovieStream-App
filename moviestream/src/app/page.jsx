@@ -5,23 +5,48 @@ import { Button } from "@/components/ui/button";
 import { Heart, Star } from "lucide-react";
 import axios from "axios";
 import { useWishlist, wishListContext } from "./context/MainContext";
+import Swal from "sweetalert2";
 
 export default function HomePage() {
   const [isWishlisted, setIsWishlisted] = useState({});
   const [data, setData] = useState(null);
 
-  const {wishList, setWishList} = useContext(wishListContext);
+  const { wishList, setWishList, userId } = useContext(wishListContext);
 
-  const addWishlist = (movie) => {
-    setWishList((prev) => {
-      const isMovieExist = prev.some((item) => item.id === movie.id);
-      if (!isMovieExist) {
-        return [...prev, movie];
-      }
-      return prev;
-    });
+  const addWishlist = async (Pid, Pname, Pdesc, Pimage) => {
+    let obj = {
+      Pid,
+      Pname,
+      Pdesc,
+      Pimage: "https://image.tmdb.org/t/p/w500" + Pimage,
+      Uid: userId,
+    };
+    console.log(obj);
+    await axios
+      .post(
+        "https://j3bkmj8x-3001.inc1.devtunnels.ms/wishlist/addWishlist",
+        obj
+      )
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Added to wishlist",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        console.log("Pid", Pid);
+        setWishList((prev) => {
+          const isMovieExist = prev.some((item) => item.id === Pid);
+          if (!isMovieExist) {
+            return [...prev, Pid];
+          }
+          return prev;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
 
   useEffect(() => {
     axios
@@ -66,8 +91,13 @@ export default function HomePage() {
                   <button
                     className="absolute top-3 right-3 bg-black/60 p-2 rounded-full text-white hover:text-[#FAC748] transition"
                     onClick={() => {
-                      toggleWishlist(movie.title)
-                      addWishlist(movie);
+                      toggleWishlist(movie.title);
+                      addWishlist(
+                        movie.id,
+                        movie.title,
+                        movie.overview,
+                        movie.poster_path
+                      );
                     }}
                   >
                     <Heart
@@ -82,7 +112,7 @@ export default function HomePage() {
                 <div className="mt-4 space-y-2">
                   <h2 className="text-xl font-semibold">{movie.title}</h2>
 
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
                     {Array.from({ length: 5 }, (_, i) => (
                       <Star
                         key={i}
@@ -92,7 +122,7 @@ export default function HomePage() {
                       />
                     ))}
                     <span className="ml-2 text-sm">{} / 5</span>
-                  </div>
+                  </div> */}
                   <p className="text-sm text-gray-700 line-clamp-3">
                     {movie.overview}
                   </p>
