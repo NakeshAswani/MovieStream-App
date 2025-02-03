@@ -1,9 +1,13 @@
-const express=require('express')
+const express = require("express");
+const userRoute = require("./Routes/userRoute");
+const wishlistRoute = require("./Routes/wishlistRoute");
 
-const route=express.Router()
+const route = express.Router();
 
-route.use('/user',require('./Routes/user_route'))
+route.get("/", (req, res) => {
+    res.send("api is working");
+});
+route.use("/user", userRoute);
+route.use("/wishlist", wishlistRoute);
 
-
-
-module.exports=route
+module.exports = route;
