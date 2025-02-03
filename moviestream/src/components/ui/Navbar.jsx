@@ -23,6 +23,7 @@ function Navbar() {
   const { userId } = useContext(wishListContext);
   const pathname = usePathname();
 
+
   console.log("pathname", pathname);
 
   const logOut = () => {
@@ -55,7 +56,7 @@ function Navbar() {
           </div>
 
           <div className="hidden md:block">
-            <Command>
+            <Command >
               <CommandInput placeholder="Type a command or search..." />
               <CommandList>
                 <CommandSeparator />

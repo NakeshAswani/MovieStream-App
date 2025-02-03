@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { wishListContext } from "@/app/context/MainContext";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().min(2, {
@@ -84,6 +85,7 @@ export default function LoginModal({ isOpen, onClose }) {
   }
 
   return (
+    <>
     <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-50   z-50">
       <div
         className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative"
@@ -100,7 +102,7 @@ export default function LoginModal({ isOpen, onClose }) {
         </h1>
         <p className="mt-2 text-center text-sm text-gray-600">
           Don't have an account?
-          <a className="text-blue-500 hover:text-blue-700" href="#">
+          <a className="text-blue-500 hover:text-blue-700" href='#'>
             Create a free account
           </a>
         </p>
@@ -128,12 +130,12 @@ export default function LoginModal({ isOpen, onClose }) {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <a
+                <Link
                   className="text-sm font-semibold text-black hover:underline"
-                  href="#"
+                  href='/forget-password'
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
               <div className="mt-2">
@@ -176,5 +178,6 @@ export default function LoginModal({ isOpen, onClose }) {
         </div>
       </div>
     </div>
+    </>
   );
 }
