@@ -1,17 +1,27 @@
-"use client"; 
+"use client";
 
-import React ,{ useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Star, } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import axios from "axios";
-
-
-
+import { useWishlist, wishListContext } from "./context/MainContext";
 
 export default function HomePage() {
-
   const [isWishlisted, setIsWishlisted] = useState({});
   const [data, setData] = useState(null);
+
+  const {wishList, setWishList} = useContext(wishListContext);
+
+  const addWishlist = (movie) => {
+    setWishList((prev) => {
+      const isMovieExist = prev.some((item) => item.id === movie.id);
+      if (!isMovieExist) {
+        return [...prev, movie];
+      }
+      return prev;
+    });
+  };
+
 
   useEffect(() => {
     axios
@@ -55,7 +65,10 @@ export default function HomePage() {
                   />
                   <button
                     className="absolute top-3 right-3 bg-black/60 p-2 rounded-full text-white hover:text-[#FAC748] transition"
-                    onClick={() => toggleWishlist(movie.title)}
+                    onClick={() => {
+                      toggleWishlist(movie.title)
+                      addWishlist(movie);
+                    }}
                   >
                     <Heart
                       fill={

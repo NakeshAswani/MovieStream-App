@@ -6,11 +6,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
-  
 }
 
 @layer base {
   :root {
+    /* --first-color: #1d2f6f;
+    --second-color: #b1ddf1;
+    --third-color: #fac748; */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -72,4 +74,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@theme {
+  --color-primary: #1d2f6f;
+  --color-secondary: #b1ddf1;
+  --color-third: #fac748;
 }
