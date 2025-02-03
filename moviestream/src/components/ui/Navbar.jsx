@@ -21,6 +21,7 @@ function Navbar() {
 
   const pathname = usePathname();
 
+
   console.log("pathname", pathname);
 
   return (
@@ -36,7 +37,7 @@ function Navbar() {
           </div>
 
           <div className="hidden md:block">
-            <Command>
+            <Command >
               <CommandInput placeholder="Type a command or search..." />
               <CommandList>
                 <CommandSeparator />
