@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { wishListContext } from "@/app/context/MainContext";
+import Swal from "sweetalert2";
 import Link from "next/link";
 
 const formSchema = z.object({
@@ -28,6 +30,7 @@ const formSchema = z.object({
 });
 
 export default function LoginModal({ isOpen, onClose }) {
+  const { userId, setUserId } = useContext(wishListContext);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,17 +61,28 @@ export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   async function onSubmit(values) {
-    
     await axios
       .post(`https://j3bkmj8x-3001.inc1.devtunnels.ms/user/loginUser`, values)
       .then((res) => {
         console.log(res);
+        setUserId(res.data.data.user.id);
+        onClose();
+        Swal.fire({
+          icon: "success",
+          title: "Login Successfully",
+          showConfirmButton: false,
+          timer: 1000,
+        });
       })
       .catch((err) => {
         console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: res.data.message,
+          showConfirmButton: false,
+        });
       });
   }
-
 
   return (
     <>

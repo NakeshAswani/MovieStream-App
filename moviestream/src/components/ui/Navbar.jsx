@@ -1,6 +1,6 @@
 "use client";
 
-import { React, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { Button } from "./button";
 import {
   Command,
@@ -13,16 +13,35 @@ import LoginModal from "./LoginModal";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import RegisterModal from "./RegisterModal";
+import Swal from "sweetalert2";
+import { wishListContext } from "@/app/context/MainContext";
 
 function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-
+  const { userId } = useContext(wishListContext);
   const pathname = usePathname();
 
 
   console.log("pathname", pathname);
+
+  const logOut = () => {
+    console.log("logout");
+    localStorage.removeItem("userId");
+    Swal.fire({
+      icon: "success",
+      title: "Logout Successfully",
+      showConfirmButton: false,
+      timer: 1000,
+    });
+    // window.location.reload();
+  };
+
+  useEffect(() => {
+    // userId = localStorage.getItem("userId");
+    console.log(userId);
+  }, [userId]);
 
   return (
     <>
@@ -65,21 +84,35 @@ function Navbar() {
               })}
             </ul>
             <div className="p-2 space-x-4 flex text-black">
-              <Button
-                variant="outline"
-                className="hover:bg-[#FAC748]"
-                onClick={() => {
-                  console.log("Opening Login Modal");
-                  setIsLoginModalOpen(true);
-                }}
-              >
-                Log In
-              </Button>
-              <Button 
-               onClick={() => setIsRegisterModalOpen(true)}
-              variant="outline" className="hover:bg-[#FAC748]">
-                Register
-              </Button>
+              { userId !== null ? (
+                <Button
+                  variant="outline"
+                  className="hover:bg-[#FAC748]"
+                  onClick={() => logOut()}
+                >
+                  Log Out
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="outline"
+                    className="hover:bg-[#FAC748]"
+                    onClick={() => {
+                      console.log("Opening Login Modal");
+                      setIsLoginModalOpen(true);
+                    }}
+                  >
+                    Log In
+                  </Button>
+                  <Button
+                    onClick={() => setIsRegisterModalOpen(true)}
+                    variant="outline"
+                    className="hover:bg-[#FAC748]"
+                  >
+                    Register
+                  </Button>
+                </>
+              )}
             </div>
           </div>
 
