@@ -15,23 +15,65 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const formSchema = z.object({
-  username: z.string().min(2, {
+  name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
+  confirmPassword: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
 });
 
 export default function RegisterModal({ isOpen, onClose }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
+    let obj = {};
     console.log(values);
+    if (values.password !== values.confirmPassword) {
+      console.log("enter the correct password");
+    } else {
+      obj = {
+        name: values.name,
+        password: values.password,
+        email: values.email,
+      };
+    }
+    await axios
+      .post(`https://j3bkmj8x-3001.inc1.devtunnels.ms/user/addUser`, obj)
+      .then((res) => {
+        console.log(res);
+        Swal.fire({
+          title: "Success!",
+          text: "Registered Successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
   }
 
   useEffect(() => {
@@ -52,12 +94,14 @@ export default function RegisterModal({ isOpen, onClose }) {
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative "  onClick={(e) => e.stopPropagation()} >
+        <div
+          className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative "
+          onClick={(e) => e.stopPropagation()}
+        >
           <button
             className="absolute top-3 right-5 text-gray-500"
             onClick={onClose}
           >
-            {" "}
             ✖
           </button>
           <h1 className="text-2xl font-bold text-center">Register Now</h1>
@@ -73,12 +117,12 @@ export default function RegisterModal({ isOpen, onClose }) {
                 <div className="">
                   <FormField
                     control={form.control}
-                    name="username"
+                    name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Username</FormLabel>
+                        <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Username" {...field} />
+                          <Input placeholder="name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
