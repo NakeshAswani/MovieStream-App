@@ -7,7 +7,7 @@
 /Backend/node_modules
 /Backend/package.json
 /Backend/package-lock.json
-/Backend/media-streaming-828d6-52e861583d1f.json
+/Backend/.env
 /.pnp
 .pnp.*
 .yarn/*
