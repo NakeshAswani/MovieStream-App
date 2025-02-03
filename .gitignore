@@ -7,7 +7,6 @@
 /Backend/node_modules
 /Backend/package.json
 /Backend/package-lock.json
-/Backend/.env
 /.pnp
 .pnp.*
 .yarn/*

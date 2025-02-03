@@ -124,6 +124,7 @@ const loginUser = async (request, response) => {
         responseObject = {
             status: 200,
             message: "User logged in successfully",
+            data: authData
         }
     }
     response.send(responseObject);
