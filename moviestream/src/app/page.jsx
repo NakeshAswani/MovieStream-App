@@ -9,9 +9,8 @@ import Swal from "sweetalert2";
 
 export default function HomePage() {
   const [isWishlisted, setIsWishlisted] = useState({});
-  const [data, setData] = useState(null);
 
-  const { wishList, setWishList, userId } = useContext(wishListContext);
+  const { content, userId } = useContext(wishListContext);
 
   const addWishlist = async (Pid, Pname, Pdesc, Pimage) => {
     let obj = {
@@ -40,27 +39,12 @@ export default function HomePage() {
       });
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1"
-      )
-      .then((response) => setData(response.data.results))
-      .catch((error) => console.error("Error:", error));
-  }, []);
-
-
-  const toggleWishlist = (title) => {
-    setIsWishlisted((prev) => ({ ...prev, [title]: !prev[title] }));
-  };
-
-
   return (
     <>
       <div className="bg-[#e6eaf8] min-h-screen flex justify-center items-center py-10 px-4">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
-          {data &&
-            data.map((movie) => (
+          {content &&
+            content.map((movie) => (
               <div
                 key={movie.title}
                 className="bg-gray-100 text-black p-4 rounded-lg shadow-lg w-full max-w-sm transform transition hover:scale-105"
