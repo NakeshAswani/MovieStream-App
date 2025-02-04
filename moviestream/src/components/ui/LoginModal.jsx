@@ -78,7 +78,7 @@ export default function LoginModal({ isOpen, onClose }) {
         console.log(err);
         Swal.fire({
           icon: "error",
-          title: res.data.message,
+          title: "Something went wrong",
           showConfirmButton: false,
         });
       });
