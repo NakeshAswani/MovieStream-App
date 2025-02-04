@@ -84,6 +84,10 @@ export default function RegisterModal({ isOpen, onClose }) {
     };
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
+
+    }
+    else{
+      form.reset()
     }
     return () => {
       document.removeEventListener("keydown", handleEscape);
@@ -152,7 +156,7 @@ export default function RegisterModal({ isOpen, onClose }) {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input placeholder="Password" {...field} />
+                          <Input type="password" placeholder="Password" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -167,7 +171,7 @@ export default function RegisterModal({ isOpen, onClose }) {
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <Input placeholder="Confirm Password" {...field} />
+                          <Input  type="password" placeholder="Confirm Password" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
