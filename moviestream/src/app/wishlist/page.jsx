@@ -20,14 +20,15 @@ export default function Wishlist() {
       )
       .then((res) => {
         setWishList(res.data.wishlistData);
+        console.log(wishList, "wishlist");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  console.log(wishList.Wid);
+  // console.log(wishList.Wid);
   const removeWishlist = (id) => {
-    console.log(id)
+    // console.log(id)
     axios
       .delete(
         `https://movie-stream-app-backend.vercel.app/wishlist/deleteWishlist/${id}`
@@ -49,7 +50,7 @@ export default function Wishlist() {
   useEffect(() => {
     getWish();
     console.log(wishList);
-  }, [setWishList]);
+  }, [wishList]);
 
   return (
     <>

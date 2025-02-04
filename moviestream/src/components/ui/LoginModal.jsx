@@ -70,7 +70,7 @@ export default function LoginModal({ isOpen, onClose }) {
         values
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setUserId(res.data.data.user.id);
         onClose();
         Swal.fire({

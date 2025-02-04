@@ -44,9 +44,9 @@ export default function RegisterModal({ isOpen, onClose }) {
 
   async function onSubmit(values) {
     let obj = {};
-    console.log(values);
+    // console.log(values);
     if (values.password !== values.confirmPassword) {
-      console.log("enter the correct password");
+      // console.log("enter the correct password");
     } else {
       obj = {
         name: values.name,
@@ -57,7 +57,7 @@ export default function RegisterModal({ isOpen, onClose }) {
     await axios
       .post(`https://movie-stream-app-backend.vercel.app/user/addUser`, obj)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Success!",
           text: "Registered Successfully",

@@ -24,10 +24,10 @@ function Navbar() {
   const pathname = usePathname();
 
 
-  console.log("pathname", pathname);
+  // console.log("pathname", pathname);
 
   const logOut = () => {
-    console.log("logout");
+    // console.log("logout");
     // localStorage.removeItem("userId");
     if (typeof window !== "undefined") {
       // Only run this in the browser
@@ -44,7 +44,7 @@ function Navbar() {
 
   useEffect(() => {
     // userId = localStorage.getItem("userId");
-    console.log(userId);
+    // console.log(userId);
   }, [userId]);
 
   return (
@@ -102,7 +102,7 @@ function Navbar() {
                     variant="outline"
                     className="hover:bg-[#FAC748]"
                     onClick={() => {
-                      console.log("Opening Login Modal");
+                      // console.log("Opening Login Modal");
                       setIsLoginModalOpen(true);
                     }}
                   >
@@ -140,11 +140,11 @@ function Navbar() {
             <ul className="flex flex-col items-center space-y-6 mt-4 font-medium">
               {["Home", "Subscription", "Wishlist"].map((text) => {
                 const path = text === "Home" ? "/" : `/${text.toLowerCase()}`;
-                console.log("path", path);
+                // console.log("path", path);
 
                 const isActive = pathname === path;
 
-                console.log("isActive", isActive);
+                // console.log("isActive", isActive);
 
                 return (
                   <li key={text}>
@@ -181,14 +181,14 @@ function Navbar() {
         <LoginModal
           isOpen={isLoginModalOpen}
           onClose={() => {
-            console.log("Closing Login Modal");
+            // console.log("Closing Login Modal");
             setIsLoginModalOpen(false);
           }}
         />
         <RegisterModal
           isOpen={isRegisterModalOpen}
           onClose={() => {
-            console.log("Closing Register Modal");
+            // console.log("Closing Register Modal");
             setIsRegisterModalOpen(false);
           }}
         />

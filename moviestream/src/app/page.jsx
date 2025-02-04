@@ -21,7 +21,7 @@ export default function HomePage() {
       Pimage: "https://image.tmdb.org/t/p/w500" + Pimage,
       Uid: userId,
     };
-    console.log(obj);
+
     await axios
       .post(
         "https://movie-stream-app-backend.vercel.app/wishlist/addWishlist",
@@ -33,14 +33,6 @@ export default function HomePage() {
           title: "Added to wishlist",
           showConfirmButton: false,
           timer: 1000,
-        });
-        console.log("Pid", Pid);
-        setWishList((prev) => {
-          const isMovieExist = prev.some((item) => item.id === Pid);
-          if (!isMovieExist) {
-            return [...prev, Pid];
-          }
-          return prev;
         });
       })
       .catch((err) => {
@@ -57,15 +49,11 @@ export default function HomePage() {
       .catch((error) => console.error("Error:", error));
   }, []);
 
-  console.log("Before", data);
-
-  // console.log("BEfore  isWishlisted", isWishlisted);
 
   const toggleWishlist = (title) => {
     setIsWishlisted((prev) => ({ ...prev, [title]: !prev[title] }));
   };
 
-  // console.log("After  isWishlisted", isWishlisted);
 
   return (
     <>
