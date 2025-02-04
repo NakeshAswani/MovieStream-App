@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import axios from "axios";
-import { useWishlist, wishListContext } from "./context/MainContext";
+import { wishListContext } from "./context/MainContext";
 import Swal from "sweetalert2";
 
 export default function HomePage() {
-  const [isWishlisted, setIsWishlisted] = useState([]);
-
+  const [isWishlisted, setIsWishlisted] = useState({});
   const { content, userId } = useContext(wishListContext);
 
   const addWishlist = async (Pid, Pname, Pdesc, Pimage) => {
@@ -21,117 +20,96 @@ export default function HomePage() {
       Uid: userId,
     };
 
-    await axios
-      .post(
+    try {
+      await axios.post(
         "https://movie-stream-app-backend.vercel.app/wishlist/addWishlist",
         obj
-      )
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Added to wishlist",
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Added to wishlist",
+        showConfirmButton: false,
+        timer: 1000,
       });
+
+      // Update the local state to reflect the change
+      setIsWishlisted((prev) => ({ ...prev, [Pid]: true }));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const toggleWishlist = (title) => {
-    setIsWishlisted((prev) => ({ ...prev, [title]: !prev[title] }));
-  };
-
-  const getWishlist = () => {
-    axios
-      .get(
+  const getWishlist = async () => {
+    try {
+      const res = await axios.get(
         `https://movie-stream-app-backend.vercel.app/wishlist/getWishlist/${userId}`
-      )
-      .then((res) => {
-        res.data.wishlistData.map((item) => {
-          // setIsWishlisted((prev) => ({ ...prev, [item.Pid]: true }));
-          // console.log(isWishlisted)
-          setIsWishlisted(item.Pid)
-          console.log(isWishlisted)
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+      );
+
+      // Transform wishlistData into an object where Pid is the key
+      const wishlistMap = {};
+      res.data.wishlistData.forEach((item) => {
+        wishlistMap[item.Pid] = true;
       });
-  }
+
+      setIsWishlisted(wishlistMap);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getWishlist();
   }, []);
 
   return (
-    <>
-      <div className="bg-[#e6eaf8] min-h-screen flex justify-center items-center py-10 px-4">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
-          {content &&
-            content.map((movie) => (
-              <div
-                key={movie.title}
-                className="bg-gray-100 text-black p-4 rounded-lg shadow-lg w-full max-w-sm transform transition hover:scale-105"
-              >
-                <div className="relative w-full ">
-                  <img
-                    key={movie.id}
-                    src={
+    <div className="bg-[#e6eaf8] min-h-screen flex justify-center items-center py-10 px-4">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
+        {content &&
+          content.map((movie) => (
+            <div
+              key={movie.id}
+              className="bg-gray-100 text-black p-4 rounded-lg shadow-lg w-full max-w-sm transform transition hover:scale-105"
+            >
+              <div className="relative w-full">
+                <img
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                      : `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`
+                  }
+                  alt={movie.title}
+                  className="rounded-lg object-cover w-full h-auto"
+                />
+                <button
+                  className="absolute top-3 right-3 bg-black/60 p-2 rounded-full text-white hover:text-[#FAC748] transition"
+                  onClick={() =>
+                    addWishlist(
+                      movie.id,
+                      movie.title,
+                      movie.overview,
                       movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                        : `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`
-                    }
-                    alt={movie.title}
-                    className="rounded-lg object-cover w-full h-auto"
+                    )
+                  }
+                >
+                  <Heart
+                    fill={isWishlisted[movie.id] ? "#FAC748" : "transparent"}
+                    stroke="white"
                   />
-                  <button
-                    className="absolute top-3 right-3 bg-black/60 p-2 rounded-full text-white hover:text-[#FAC748] transition"
-                    onClick={() => {
-                      addWishlist(
-                        movie.id,
-                        movie.title,
-                        movie.overview,
-                        movie.poster_path
-                      );
-                    }}
-                  >
-                    <Heart
-                      fill={
-                        isWishlisted.includes(movie.id) ? "#FAC748" : "transparent"
-                      }
-                      stroke="white"
-                    />
-                  </button>
-                </div>
-
-                <div className="mt-4 space-y-2">
-                  <h2 className="text-xl font-semibold">{movie.title}</h2>
-
-                  {/* <div className="flex items-center">
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5"
-                        fill={i < movie.rating ? "#FAC748" : "gray"}
-                        stroke="gray"
-                      />
-                    ))}
-                    <span className="ml-2 text-sm">{} / 5</span>
-                  </div> */}
-                  <p className="text-sm text-gray-700 line-clamp-3">
-                    {movie.overview}
-                  </p>
-
-                  <Button className="w-full bg-[#FAC748] text-black font-semibold py-2 rounded-md hover:bg-[#f5b72d] transition">
-                    Watch Now
-                  </Button>
-                </div>
+                </button>
               </div>
-            ))}
-        </div>
+
+              <div className="mt-4 space-y-2">
+                <h2 className="text-xl font-semibold">{movie.title}</h2>
+                <p className="text-sm text-gray-700 line-clamp-3">
+                  {movie.overview}
+                </p>
+                <Button className="w-full bg-[#FAC748] text-black font-semibold py-2 rounded-md hover:bg-[#f5b72d] transition">
+                  Watch Now
+                </Button>
+              </div>
+            </div>
+          ))}
       </div>
-    </>
+    </div>
   );
 }
