@@ -40,6 +40,18 @@ export default function HomePage() {
       });
   };
 
+  const existingWishlist = () => {
+    let existing = false;
+    wishList.map((movie) => {
+      if (movie.Pid === data.id) {
+        existing = true;
+      }
+    });
+    return existing;
+  }
+
+  console.log("existingWishlist", existingWishlist);
+
   useEffect(() => {
     axios
       .get(
@@ -48,12 +60,6 @@ export default function HomePage() {
       .then((response) => setData(response.data.results))
       .catch((error) => console.error("Error:", error));
   }, []);
-
-
-  const toggleWishlist = (title) => {
-    setIsWishlisted((prev) => ({ ...prev, [title]: !prev[title] }));
-  };
-
 
   return (
     <>
@@ -79,7 +85,6 @@ export default function HomePage() {
                   <button
                     className="absolute top-3 right-3 bg-black/60 p-2 rounded-full text-white hover:text-[#FAC748] transition"
                     onClick={() => {
-                      toggleWishlist(movie.title);
                       addWishlist(
                         movie.id,
                         movie.title,
@@ -90,7 +95,7 @@ export default function HomePage() {
                   >
                     <Heart
                       fill={
-                        isWishlisted[movie.title] ? "#FAC748" : "transparent"
+                        existingWishlist ? " #FAC748" : "transparent" 
                       }
                       stroke="white"
                     />

@@ -13,7 +13,7 @@ export default function Wishlist() {
 
   console.log(wishList, "wishlist");
 
-  const getWish = () => {
+  const getWish = () => {   
     axios
       .get(
         `https://movie-stream-app-backend.vercel.app/wishlist/getWishlist/${userId}`
@@ -80,7 +80,14 @@ export default function Wishlist() {
                       className="absolute top-3 right-3 bg-black/60 p-2 rounded-full text-white hover:text-[#FAC748] transition"
                       onClick={() => removeWishlist(movie.Wid)}
                     >
-                      <Heart fill={"#FAC748"} stroke="white" />
+                      <Heart
+                        fill={
+                          wishList.some((item) => item.Wid === movie.Wid)
+                            ? "#FAC748"
+                            : "transparent"
+                        }
+                        stroke="white"
+                      />
                     </button>
                   </div>
 
