@@ -15,20 +15,16 @@ import Link from "next/link";
 import RegisterModal from "./RegisterModal";
 import Swal from "sweetalert2";
 import { wishListContext } from "@/app/context/MainContext";
+import axios from "axios";
 
 function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const { userId } = useContext(wishListContext);
+  const { setContent, userId } = useContext(wishListContext);
   const pathname = usePathname();
 
-
-  // console.log("pathname", pathname);
-
   const logOut = () => {
-    // console.log("logout");
-    // localStorage.removeItem("userId");
     if (typeof window !== "undefined") {
       // Only run this in the browser
       localStorage.removeItem("userId");
@@ -39,13 +35,24 @@ function Navbar() {
       showConfirmButton: false,
       timer: 1000,
     });
-    // window.location.reload();
   };
 
+  const handleInput = async (e) => {
+    if (e !== undefined) {
+      await axios.get(`https://api.themoviedb.org/3/search/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&query=${e}`)
+        .then((res) => setContent(res.data.results))
+        .catch((err) => console.log(err))
+    }
+    else {
+      await axios.get("https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1")
+        .then((res) => setContent(res.data.results))
+        .catch((err) => console.log(err))
+    }
+  }
+
   useEffect(() => {
-    // userId = localStorage.getItem("userId");
-    // console.log(userId);
-  }, [userId]);
+    handleInput()
+  }, [])
 
   return (
     <>
@@ -61,7 +68,7 @@ function Navbar() {
 
           <div className="hidden md:block">
             <Command >
-              <CommandInput placeholder="Type a command or search..." />
+              <CommandInput placeholder="Type a command or search..." onValueChange={(e) => handleInput(e)} />
               <CommandList>
                 <CommandSeparator />
               </CommandList>
@@ -77,9 +84,8 @@ function Navbar() {
                   <li key={text}>
                     <Link
                       href={path}
-                      className={`hover:text-[#FAC748] transition-colors ${
-                        isActive ? "text-[#FAC748] font-bold" : "text-white"
-                      }`}
+                      className={`hover:text-[#FAC748] transition-colors ${isActive ? "text-[#FAC748] font-bold" : "text-white"
+                        }`}
                     >
                       {text}
                     </Link>
@@ -88,7 +94,7 @@ function Navbar() {
               })}
             </ul>
             <div className="p-2 space-x-4 flex text-black">
-              { userId !== null ? (
+              {userId !== null ? (
                 <Button
                   variant="outline"
                   className="hover:bg-[#FAC748]"
@@ -127,9 +133,8 @@ function Navbar() {
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
           <div
-            className={`fixed top-0 right-0 h-full bg-[#1D2F6F] text-white w-64 transform ${
-              isOpen ? "translate-x-0" : "translate-x-full"
-            } transition-transform duration-300 ease-in-out shadow-lg z-10`}
+            className={`fixed top-0 right-0 h-full bg-[#1D2F6F] text-white w-64 transform ${isOpen ? "translate-x-0" : "translate-x-full"
+              } transition-transform duration-300 ease-in-out shadow-lg z-10`}
           >
             <div className="flex justify-end p-4">
               <button onClick={() => setIsOpen(false)} className="text-white">
@@ -150,9 +155,8 @@ function Navbar() {
                   <li key={text}>
                     <Link
                       href={path}
-                      className={`hover:text-[#FAC748] transition-colors ${
-                        isActive ? "text-[#FAC748] font-bold" : "text-white"
-                      }`}
+                      className={`hover:text-[#FAC748] transition-colors ${isActive ? "text-[#FAC748] font-bold" : "text-white"
+                        }`}
                     >
                       {text}
                     </Link>

@@ -11,16 +11,13 @@ import Swal from "sweetalert2";
 export default function Wishlist() {
   const { wishList, setWishList, userId } = useContext(wishListContext);
 
-  console.log(wishList, "wishlist");
-
-  const getWish = () => {   
+  const getWish = () => {
     axios
       .get(
         `https://movie-stream-app-backend.vercel.app/wishlist/getWishlist/${userId}`
       )
       .then((res) => {
         setWishList(res.data.wishlistData);
-        console.log(wishList, "wishlist");
       })
       .catch((err) => {
         console.log(err);
@@ -49,8 +46,7 @@ export default function Wishlist() {
 
   useEffect(() => {
     getWish();
-    console.log(wishList);
-  }, [wishList]);
+  }, []);
 
   return (
     <>

@@ -8,10 +8,9 @@ import { useWishlist, wishListContext } from "./context/MainContext";
 import Swal from "sweetalert2";
 
 export default function HomePage() {
-  const [isWishlisted, setIsWishlisted] = useState({});
-  const [data, setData] = useState(null);
+  const [isWishlisted, setIsWishlisted] = useState([]);
 
-  const { wishList, setWishList, userId } = useContext(wishListContext);
+  const { content, userId } = useContext(wishListContext);
 
   const addWishlist = async (Pid, Pname, Pdesc, Pimage) => {
     let obj = {
@@ -40,33 +39,38 @@ export default function HomePage() {
       });
   };
 
-  const existingWishlist = () => {
-    let existing = false;
-    wishList.map((movie) => {
-      if (movie.Pid === data.id) {
-        existing = true;
-      }
-    });
-    return existing;
-  }
+  const toggleWishlist = (title) => {
+    setIsWishlisted((prev) => ({ ...prev, [title]: !prev[title] }));
+  };
 
-  console.log("existingWishlist", existingWishlist);
-
-  useEffect(() => {
+  const getWishlist = () => {
     axios
       .get(
-        "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1"
+        `https://movie-stream-app-backend.vercel.app/wishlist/getWishlist/${userId}`
       )
-      .then((response) => setData(response.data.results))
-      .catch((error) => console.error("Error:", error));
+      .then((res) => {
+        res.data.wishlistData.map((item) => {
+          // setIsWishlisted((prev) => ({ ...prev, [item.Pid]: true }));
+          // console.log(isWishlisted)
+          setIsWishlisted(item.Pid)
+          console.log(isWishlisted)
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    getWishlist();
   }, []);
 
   return (
     <>
       <div className="bg-[#e6eaf8] min-h-screen flex justify-center items-center py-10 px-4">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
-          {data &&
-            data.map((movie) => (
+          {content &&
+            content.map((movie) => (
               <div
                 key={movie.title}
                 className="bg-gray-100 text-black p-4 rounded-lg shadow-lg w-full max-w-sm transform transition hover:scale-105"
@@ -95,7 +99,7 @@ export default function HomePage() {
                   >
                     <Heart
                       fill={
-                        existingWishlist ? " #FAC748" : "transparent" 
+                        isWishlisted.includes(movie.id) ? "#FAC748" : "transparent"
                       }
                       stroke="white"
                     />
