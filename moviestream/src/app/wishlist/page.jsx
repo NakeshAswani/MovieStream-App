@@ -11,8 +11,6 @@ import Swal from "sweetalert2";
 export default function Wishlist() {
   const { wishList, setWishList, userId } = useContext(wishListContext);
 
-  console.log(wishList, "wishlist");
-
   const getWish = () => {
     axios
       .get(
@@ -20,7 +18,6 @@ export default function Wishlist() {
       )
       .then((res) => {
         setWishList(res.data.wishlistData);
-        console.log(wishList, "wishlist");
       })
       .catch((err) => {
         console.log(err);
@@ -49,8 +46,7 @@ export default function Wishlist() {
 
   useEffect(() => {
     getWish();
-    console.log(wishList);
-  }, [wishList]);
+  }, []);
 
   return (
     <>

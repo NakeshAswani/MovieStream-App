@@ -8,7 +8,7 @@ import { useWishlist, wishListContext } from "./context/MainContext";
 import Swal from "sweetalert2";
 
 export default function HomePage() {
-  const [isWishlisted, setIsWishlisted] = useState({});
+  const [isWishlisted, setIsWishlisted] = useState([]);
 
   const { content, userId } = useContext(wishListContext);
 
@@ -38,6 +38,32 @@ export default function HomePage() {
         console.log(err);
       });
   };
+
+  const toggleWishlist = (title) => {
+    setIsWishlisted((prev) => ({ ...prev, [title]: !prev[title] }));
+  };
+
+  const getWishlist = () => {
+    axios
+      .get(
+        `https://movie-stream-app-backend.vercel.app/wishlist/getWishlist/${userId}`
+      )
+      .then((res) => {
+        res.data.wishlistData.map((item) => {
+          // setIsWishlisted((prev) => ({ ...prev, [item.Pid]: true }));
+          // console.log(isWishlisted)
+          setIsWishlisted(item.Pid)
+          console.log(isWishlisted)
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
 
   return (
     <>
@@ -74,7 +100,7 @@ export default function HomePage() {
                   >
                     <Heart
                       fill={
-                        isWishlisted[movie.title] ? "#FAC748" : "transparent"
+                        isWishlisted.includes(movie.id) ? "#FAC748" : "transparent"
                       }
                       stroke="white"
                     />
