@@ -24,7 +24,7 @@ export default function HomePage() {
     console.log(obj);
     await axios
       .post(
-        "http://localhost:3001/wishlist/addWishlist",
+        "https://movie-stream-app-backend.vercel.app/wishlist/addWishlist",
         obj
       )
       .then(() => {

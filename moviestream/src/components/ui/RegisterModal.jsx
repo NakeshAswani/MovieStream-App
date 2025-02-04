@@ -55,7 +55,7 @@ export default function RegisterModal({ isOpen, onClose }) {
       };
     }
     await axios
-      .post(`http://localhost:3001/user/addUser`, obj)
+      .post(`https://movie-stream-app-backend.vercel.app/user/addUser`, obj)
       .then((res) => {
         console.log(res);
         Swal.fire({

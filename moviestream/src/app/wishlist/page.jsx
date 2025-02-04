@@ -16,7 +16,7 @@ export default function Wishlist() {
   const getWish = () => {
     axios
       .get(
-        `http://localhost:3001/wishlist/getWishlist/${userId}`
+        `https://movie-stream-app-backend.vercel.app/wishlist/getWishlist/${userId}`
       )
       .then((res) => {
         setWishList(res.data.wishlistData);
@@ -30,7 +30,7 @@ export default function Wishlist() {
     console.log(id)
     axios
       .delete(
-        `http://localhost:3001/wishlist/deleteWishlist/${id}`
+        `https://movie-stream-app-backend.vercel.app/wishlist/deleteWishlist/${id}`
       )
       .then((data) => {
         Swal.fire({

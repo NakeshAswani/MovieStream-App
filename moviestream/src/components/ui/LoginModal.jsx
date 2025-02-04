@@ -62,7 +62,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
   async function onSubmit(values) {
     await axios
-      .post(`http://localhost:3001/user/loginUser`, values)
+      .post(`https://movie-stream-app-backend.vercel.app/user/loginUser`, values)
       .then((res) => {
         console.log(res);
         setUserId(res.data.data.user.id);
