@@ -35,6 +35,7 @@ export default function LoginModal({ isOpen, onClose }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
 
@@ -95,7 +96,7 @@ export default function LoginModal({ isOpen, onClose }) {
       <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-50   z-50">
         <div
           className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative"
-          onClick={(e) => e.stopPropagation()}
+          // onClick={(e) => e.stopPropagation()}
         >
           <button
             className="absolute top-2 right-2 text-gray-500"
@@ -146,18 +147,18 @@ export default function LoginModal({ isOpen, onClose }) {
                         <FormControl>
                           <Input type="password" placeholder="Password" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage />   
                       </FormItem>
                     )}
                   />
                 </div>
                 <div className="flex items-center justify-end">
-                  <Link
+                  <a
                     className="text-sm font-semibold text-black hover:underline"
                     href="/forget-password"
                   >
                     Forgot password?
-                  </Link>
+                  </a>
                 </div>
                 <div>
                   <Button className="w-full" type="submit">
